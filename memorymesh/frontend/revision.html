@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MemoryMesh - Manage Revisions</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/css/styles.css">
+</head>
+
+<body class="min-h-screen bg-bg-primary">
+
+  <div id="sidebar"></div>
+  <div id="topbar"></div>
+
+  <main class="mt-24 ml-24 p-6">
+    <div class="container mx-auto max-w-4xl">
+
+      <div class="bg-white rounded-xl shadow-sm p-8">
+
+        <h2 class="text-3xl font-bold mb-8 text-center">Manage Your Revisions</h2>
+
+        <!-- Upload File Section -->
+        <div class="flex flex-col items-center justify-center border-4 border-dashed border-icon-active rounded-2xl p-8 mb-8 hover:bg-accent-primary hover:bg-opacity-30 transition">
+          <i class="fas fa-upload text-5xl text-icon-active mb-4"></i>
+          <p class="mb-2 font-semibold">Upload a File (.txt, .pdf, .pptx)</p>
+          <input id="file-upload" type="file" accept=".txt,.pdf,.pptx" class="hidden" onchange="handleUpload(event)">
+          <button onclick="document.getElementById('file-upload').click()" class="bg-icon-active text-white px-6 py-2 rounded-lg hover:bg-green-600">Browse Files</button>
+        </div>
+
+        <!-- OR -->
+        <div class="relative text-center my-6">
+          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-300"></div></div>
+          <div class="relative bg-white px-4 text-sm text-gray-600">OR</div>
+        </div>
+
+        <!-- Manual Create Revision -->
+        <div class="bg-gray-50 p-6 rounded-xl">
+          <h3 class="text-xl font-bold mb-4">Create a Revision Manually</h3>
+          <input id="manual-title" type="text" placeholder="Revision Title" class="w-full p-3 border rounded-lg mb-4">
+          <textarea id="manual-text" placeholder="Write your notes here..." class="w-full p-3 border rounded-lg h-48 mb-4"></textarea>
+          <button onclick="saveManualRevision()" class="w-full py-3 bg-icon-active text-white rounded-lg font-medium hover:bg-green-600">
+            Save Revision
+          </button>
+        </div>
+
+        <!-- List of Revisions -->
+        <div class="mt-10">
+          <h3 class="text-xl font-bold mb-4">Your Revisions</h3>
+          <div id="revision-list" class="space-y-4"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script src="src/js/main.js"></script>
+  <script src="src/js/injectComponents.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', loadRevisions);
+
+    function handleUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      fetch('/api/upload_revision', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.text) {
+          const title = prompt('Enter a title for this revision:');
+          if (title) {
+            saveRevision(title, data.text);
+          }
+        } else {
+          alert('Failed to extract text.');
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Upload error.');
+      });
+    }
+
+    function saveManualRevision() {
+      const title = document.getElementById('manual-title').value.trim();
+      const content = document.getElementById('manual-text').value.trim();
+
+      if (!title || !content) {
+        alert('Fill in both title and content.');
+        return;
+      }
+      saveRevision(title, content);
+    }
+
+    function saveRevision(title, content) {
+      const revisions = JSON.parse(localStorage.getItem('revisions') || '[]');
+      revisions.push({ id: Date.now().toString(), title, content, created_at: new Date().toISOString() });
+      localStorage.setItem('revisions', JSON.stringify(revisions));
+      loadRevisions();
+    }
+
+    function loadRevisions() {
+      const revisions = JSON.parse(localStorage.getItem('revisions') || '[]');
+      const list = document.getElementById('revision-list');
+      list.innerHTML = '';
+
+      revisions.forEach(rev => {
+        const div = document.createElement('div');
+        div.className = "p-4 bg-gray-100 rounded-lg flex justify-between items-center";
+        div.innerHTML = `
+          <div>
+            <h4 class="font-bold">${rev.title}</h4>
+            <p class="text-sm text-gray-500">Created: ${new Date(rev.created_at).toLocaleDateString()}</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="selectRevision('${rev.id}')" class="px-4 py-2 bg-icon-active text-white rounded-lg hover:bg-green-600">Select</button>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function selectRevision(id) {
+      localStorage.setItem('activeRevision', id);
+      window.location.href = 'quiz.html';
+    }
+  </script>
+
+</body>
+</html>
