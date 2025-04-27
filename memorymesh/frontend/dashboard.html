@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MemoryMesh - Dashboard</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts - Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="src/css/styles.css">
+</head>
+
+<body class="min-h-screen bg-bg-primary">
+
+  <!-- Sidebar + Topbar Injectées -->
+  <div id="sidebar"></div>
+  <div id="topbar"></div>
+
+  <!-- Contenu Principal -->
+  <main class="mt-24 ml-24 p-6">
+    <div class="container mx-auto max-w-5xl">
+
+      <!-- Carte Analytique -->
+      <div class="bg-white rounded-xl shadow-sm p-8">
+        
+        <!-- En-tête -->
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-2xl font-semibold">MemoryMesh Dashboard</h2>
+          <div class="flex gap-4 items-center">
+            <input type="text" placeholder="Search..." class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            <button class="p-2 hover:bg-gray-100 rounded-full transition-all" aria-label="Notifications">
+              <i class="fas fa-bell text-text-secondary text-xl"></i>
+            </button>
+            <button class="p-2 hover:bg-gray-100 rounded-full transition-all" aria-label="Settings">
+              <i class="fas fa-cog text-text-secondary text-xl"></i>
+            </button>
+            <div class="flex items-center space-x-2 cursor-pointer">
+              <img src="public/assets/avatar.png" alt="User Avatar" class="w-8 h-8 rounded-full" />
+              <span class="text-text-primary font-medium">User Name</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grille Retention / XP Progress -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          
+          <!-- Retention -->
+          <div>
+            <h3 class="text-lg font-medium mb-4">Retention</h3>
+            <div class="bg-gray-50 rounded-lg p-4 h-32 relative">
+              <div class="absolute inset-0 flex items-end">
+                <div class="w-full relative">
+                  <div class="absolute bottom-0 left-0 w-full h-full">
+                    <div class="retention-bar w-full h-[60%] bg-accent-primary opacity-20 rounded-lg"></div>
+                  </div>
+                  <div class="absolute bottom-0 left-0 w-full flex items-end pl-2">
+                    <div class="retention-text text-lg font-semibold text-text-primary">60<span class="text-sm">%</span></div>
+                  </div>
+                  <svg class="absolute bottom-0 left-0 w-full h-full" preserveAspectRatio="none">
+                    <path d="M0,40 C40,35 80,45 100,20" stroke="#4ADE80" fill="none" stroke-width="2"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- XP Progress -->
+          <div>
+            <h3 class="text-lg font-medium mb-4">XP Progress</h3>
+            <div class="bg-gray-50 rounded-lg p-4 h-32">
+              <div class="flex justify-between items-center mb-2">
+                <span class="xp-level text-sm font-medium">Level 5</span>
+                <span class="xp-sap text-sm text-text-secondary">2100 SAP</span>
+              </div>
+              <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div class="progress-bar w-[60%] h-full bg-icon-active"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      <!-- Section Badges -->
+      <div>
+        <h3 class="text-lg font-medium mb-4">Badges</h3>
+        <div class="grid grid-cols-3 gap-4">
+
+          <div class="badge-icon bg-gray-50 rounded-lg p-4 flex items-center justify-center cursor-pointer hover:scale-105 hover:shadow-lg transition-transform" title="Completed First Quiz">
+            <i class="fas fa-check text-icon-active text-3xl"></i>
+          </div>
+
+          <div class="badge-icon bg-gray-50 rounded-lg p-4 flex items-center justify-center cursor-pointer hover:scale-105 hover:shadow-lg transition-transform" title="Star Performer">
+            <i class="fas fa-star text-icon-active text-3xl"></i>
+          </div>
+
+          <div class="badge-icon bg-gray-50 rounded-lg p-4 flex items-center justify-center cursor-pointer hover:scale-105 hover:shadow-lg transition-transform" title="Award Winner">
+            <i class="fas fa-award text-icon-active text-3xl"></i>
+          </div>
+
+          <div class="badge-icon bg-gray-50 rounded-lg p-4 flex items-center justify-center cursor-pointer hover:scale-105 hover:shadow-lg transition-transform" title="Graduation Achieved">
+            <i class="fas fa-graduation-cap text-icon-active text-3xl"></i>
+          </div>
+
+          <div class="badge-icon bg-gray-50 rounded-lg p-4 flex items-center justify-center cursor-pointer hover:scale-105 hover:shadow-lg transition-transform" title="Lightning Fast Learner">
+            <i class="fas fa-bolt text-icon-active text-3xl"></i>
+          </div>
+
+          <div class="badge-icon bg-gray-50 rounded-lg p-4 flex items-center justify-center cursor-pointer hover:scale-105 hover:shadow-lg transition-transform" title="Top Trophy">
+            <i class="fas fa-trophy text-icon-active text-3xl"></i>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="mt-10">
+        <h3 class="text-lg font-medium mb-4">Recent Activity</h3>
+        <div id="recent-activity" class="bg-gray-50 rounded-lg p-4 max-h-48 overflow-y-auto">
+          <p>No recent activity.</p>
+        </div>
+      </div>
+
+      <!-- Create Practice Quiz Modal -->
+      <div id="createQuizModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-lg shadow-lg w-11/12 max-w-4xl p-6">
+          <h2 class="text-2xl font-bold mb-2">Create Practice Quiz</h2>
+          <p class="mb-6 text-gray-600">You can customize your practice quiz here.</p>
+          <form id="createQuizForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Left Column -->
+            <div class="space-y-6">
+              <fieldset>
+                <legend class="font-semibold mb-2">Audio</legend>
+                <label class="inline-flex items-center mr-4">
+                  <input type="radio" name="audio" value="on" class="form-radio" />
+                  <span class="ml-2">On</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input type="radio" name="audio" value="off" class="form-radio" checked />
+                  <span class="ml-2">Off</span>
+                </label>
+              </fieldset>
+
+              <fieldset>
+                <legend class="font-semibold mb-2">Types of questions</legend>
+                <label class="inline-flex items-center mr-4">
+                  <input type="checkbox" name="questionTypes" value="truefalse" checked class="form-checkbox" />
+                  <span class="ml-2">True/False</span>
+                </label>
+                <label class="inline-flex items-center mr-4">
+                  <input type="checkbox" name="questionTypes" value="multiplechoice" checked class="form-checkbox" />
+                  <span class="ml-2">Multiple Choice</span>
+                </label>
+                <label class="inline-flex items-center mr-4">
+                  <input type="checkbox" name="questionTypes" value="matching" checked class="form-checkbox" />
+                  <span class="ml-2">Matching</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input type="checkbox" name="questionTypes" value="shortanswer" checked class="form-checkbox" />
+                  <span class="ml-2">Short Answer</span>
+                </label>
+              </fieldset>
+
+              <div>
+                <label for="numQuestions" class="block font-semibold mb-2">Number of Questions</label>
+                <input type="number" id="numQuestions" name="numQuestions" min="1" max="100" value="10" class="w-full border border-gray-300 rounded px-3 py-2" />
+              </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-6">
+              <fieldset>
+                <legend class="font-semibold mb-2">Answer with</legend>
+                <label class="inline-flex items-center mr-4">
+                  <input type="radio" name="answerWith" value="term" class="form-radio" />
+                  <span class="ml-2">Term</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input type="radio" name="answerWith" value="definition" class="form-radio" checked />
+                  <span class="ml-2">Definition</span>
+                </label>
+              </fieldset>
+
+              <fieldset>
+                <legend class="font-semibold mb-2">Types of terms</legend>
+                <label class="inline-flex items-center mr-4">
+                  <input type="radio" name="termTypes" value="all" class="form-radio" checked />
+                  <span class="ml-2">All terms</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input type="radio" name="termTypes" value="difficult" class="form-radio" disabled />
+                  <span class="ml-2 flex items-center">
+                    Most Difficult Terms
+                    <span class="ml-1 bg-purple-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">PLUS</span>
+                  </span>
+                </label>
+              </fieldset>
+
+              <fieldset>
+                <legend class="font-semibold mb-2">Images</legend>
+                <label class="inline-flex items-center mr-4">
+                  <input type="radio" name="images" value="on" class="form-radio" checked />
+                  <span class="ml-2">On</span>
+                </label>
+                <label class="inline-flex items-center">
+                  <input type="radio" name="images" value="off" class="form-radio" />
+                  <span class="ml-2">Off</span>
+                </label>
+              </fieldset>
+
+              <div>
+                <label for="timeLimit" class="block font-semibold mb-2">Time</label>
+                <select id="timeLimit" name="timeLimit" class="w-full border border-gray-300 rounded px-3 py-2">
+                  <option value="10">10 minutes</option>
+                  <option value="20">20 minutes</option>
+                  <option value="30" selected>30 minutes</option>
+                  <option value="60">60 minutes</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="col-span-1 md:col-span-2 mt-6">
+              <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+                Create
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="src/js/main.js"></script>
+  <script src="src/js/injectComponents.js"></script>
+</body>
+</html>
